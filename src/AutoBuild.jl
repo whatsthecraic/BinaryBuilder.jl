@@ -1089,6 +1089,8 @@ function init_jll_package(code_dir, deploy_repo;
         end
     end
 
+    @info("[init_jll_package] code_dir: $(code_dir), isdir: $(isdir(code_dir)), deploy_repo: $(deploy_repo)")
+
     if !isdir(code_dir)
         # If it does exist, clone it down:
         @info("Cloning wrapper code repo from $(url) into $(code_dir)")
@@ -1168,7 +1170,7 @@ function filter_main_tarball(tarball_filename, platform)
     if occursin("-logs.", tarball_filename)
         return false
     end
-    tarball_filename_match = match(r"^(?<name>[\w_]+)\.v(?<version>\d+\.\d+\.\d+)\.(?<platform_triplet>([^-]+-?)+).tar", tarball_filename)
+    tarball_filename_match = match(r"^(?<name>[\w_]+)\.v(?<version>\d+\.\d+\.\d+)(\+\d+)?\.(?<platform_triplet>([^-]+-?)+).tar", tarball_filename)
     if isnothing(tarball_filename_match)
         @warn "Tarball filename does not match expected pattern: $(tarball_filename)"
         return false
